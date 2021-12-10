@@ -1,0 +1,26 @@
+{
+  "name": "livefleak",
+  "version": "1.0.0",
+  "main": "dist/server.js",
+  "author": "redpeacock78",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "fastify": "^3.24.1"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "tsc -p tsconfig.json && lsc -cbo dist src",
+    "serve": "yarn build && node dist/server.js",
+    "watch": "lsc -w"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.3",
+    "@types/node": "^16.11.12",
+    "jest": "^27.4.3",
+    "jest-mock-now": "^1.3.0",
+    "livescript": "^1.6.0",
+    "ts-jest": "^27.1.1",
+    "typescript": "^4.5.2"
+  }
+}
