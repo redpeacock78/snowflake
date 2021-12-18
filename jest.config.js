@@ -1,4 +1,9 @@
 module.exports = {
-  preset: "ts-jest",
   testEnvironment: "node",
+  transform: {
+    "^.+\\.ls$": "livescript-jest",
+    "^.+\\.(j|t)sx?$": "@swc/jest",
+  },
+  testRegex: "/test/.*\\.tsx?$",
+  moduleFileExtensions: ["js", "jsx", "json", "ls", "ts", "tsx"],
 };
