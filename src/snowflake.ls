@@ -1,7 +1,7 @@
-main = (machineId)->* (
+main = (machineId) ->* (
   seq = ``0n``
   shiftLeftTime = ``22n``
-  machine = (BigInt machineId) .<<. ``12n``
+  machine = (machineId |> BigInt) .<<. ``12n``
   lastTime = Date.now! |> BigInt
   while true
     try
@@ -12,11 +12,11 @@ main = (machineId)->* (
         throw Error 'Exceeded 4096 ids in 1 millisecond.'
       if time != lastTime 
         seq = ``0n``
-      id = BigInt.asUintN 64, shiftedTime .|. machine .|. seq
+      id = shiftedTime .|. machine .|. seq |> (x) -> BigInt.asUintN 64, x
       lastTime = time
       yield id.toString!
     catch e
       yield new Error 'Failed to generate snowflake id.'
 )
 
-export generator = (machine_id) -> main machine_id
+export generator = (machine_id) -> machine_id |> main

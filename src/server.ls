@@ -6,11 +6,13 @@ app = fastify!
 
 machine_id = process.env.MACHINE_ID |> parseInt
 machine = machine_id || (Math.random! * 1024 |> Math.floor)
-generator = snowflake.generator machine
+generator = machine |> snowflake.generator
 
 app.get '/id', (req, res) ->> (
   id = generator.next!.value
-  return { status: 'OK', id: id }
+  return if typeof id == 'string'
+    then { status: 'OK', id: id }
+    else id
 )
 
 start = ->> (

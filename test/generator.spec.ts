@@ -1,48 +1,41 @@
-import { snowflake } from "../src/index";
+const util = require("util");
+const now = require("jest-mock-now");
+const snowflake = require("../src/snowflake");
 
-const generator = snowflake(512);
+const generator = snowflake.generator(512);
 
-describe("Correctly Generates IDs", () => {
-  test("Ids are correctly sortable chronologically", async () => {
-    const list = [];
+describe("Correctly Generates IDs", (): void => {
+  test("Ids are correctly sortable chronologically", (): void => {
+    const list: bigint[] = [];
     for (let i = 0; i < 1000; i++) {
-      const value = String(generator.next().value);
+      const value: string = generator.next().value.toString();
       list.push(BigInt(value));
     }
-    const sortedList = [...list];
-    sortedList.sort();
-    expect(list).toEqual(sortedList);
+    expect(list).toEqual([...list].sort());
   });
-
-  test("Ids can generate more than 4096 without failing and are still k-sortable", async () => {
-    const list = [];
+  test("Ids can generate more than 4096 without failing and are still k-sortable", (): void => {
+    const list: bigint[] = [];
     for (let i = 0; i < 5000; i++) {
-      const value = String(generator.next().value);
-      list.push(BigInt.asUintN(64, BigInt(value) >> BigInt(22)));
+      const value: string = generator.next().value.toString();
+      list.push(BigInt.asUintN(64, BigInt(value) >> 22n));
     }
-    const sortedList = [...list];
-    sortedList.sort();
-    const util = require("util");
     util.inspect.defaultOptions.maxArrayLength = null;
-    expect(list).toEqual(sortedList);
+    expect(list).toEqual([...list].sort());
   });
-
-  test("Ids are always unique", async () => {
-    const list = [];
+  test("Ids are always unique", (): void => {
+    const list: bigint[] = [];
     for (let i = 0; i < 50000; i++) {
-      const val = generator.next().value;
-      list.push(val);
+      const value: bigint = generator.next().value;
+      list.push(value);
     }
-    const sameSize = new Set(list).size == list.length;
-    expect(sameSize).toBeTruthy();
+    expect(new Set(list).size === list.length).toBeTruthy();
   });
-
-  test("Ids throw an error if they generate >4096 in 1 millisecond", async () => {
-    require("jest-mock-now")(new Date("2017-06-22"));
-    const list = [];
+  test("Ids throw an error if they generate >4096 in 1 millisecond", (): void => {
+    now(new Date("2017-06-22"));
+    const list: bigint[] = [];
     for (let i = 0; i < 4096; i++) {
-      const value = String(generator.next().value);
-      list.push(BigInt.asUintN(64, BigInt(value) >> BigInt(22)));
+      const value: string = generator.next().value.toString();
+      list.push(BigInt.asUintN(64, BigInt(value) >> 22n));
     }
     expect(generator.next().value).toEqual(Error("Failed to generate snowflake id."));
   });
