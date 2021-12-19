@@ -1,15 +1,14 @@
 {
   "include": [
-    "src/**/*"
+    "test/**/*"
   ],
   "exclude": [
     "node_modules",
-    "test/**/*"
   ],
   "compilerOptions": {
     "outDir": "dist/",
     "module": "commonjs",
-    "target": "ES2019",
+    "target": "ESnext",
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true

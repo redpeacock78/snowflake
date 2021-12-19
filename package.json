@@ -10,6 +10,8 @@
   },
   "scripts": {
     "test": "jest",
+    "test-watch": "jest -w",
+    "test-coverage": "jest --coverage",
     "build": "lsc -cbo dist src",
     "serve": "lsc -cbo dist src && node dist/server.js",
     "watch": "nodemon"
